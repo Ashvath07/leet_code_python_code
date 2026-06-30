@@ -3,6 +3,7 @@ class Solution(object):
     # Function to count the number of substrings
     # containing at least one 'a', one 'b', and one 'c'
     def numberOfSubstrings(self, s):
+        def back(s,left,max_sum):
 
         # Dictionary to store the count of each character
         char = {'a': 0, 'b': 0, 'c': 0}
@@ -33,3 +34,4 @@ class Solution(object):
 
         # Return the total number of valid substrings
         return max_sum
+    return back(s,0,0)

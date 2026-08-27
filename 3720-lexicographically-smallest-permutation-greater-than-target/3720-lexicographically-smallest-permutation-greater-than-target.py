@@ -1,47 +1,31 @@
-from collections import Counter
-
-class Solution(object):
+class Solution:
     def lexGreaterPermutation(self, s, target):
-        compare = ''.join(sorted(s))
-        if compare > target:
-            return compare
-        
-        compare = compare[::-1]
-        if compare <= target:
-            return ""
+        cnt = [0] * 26
+        for c in s:
+            cnt[ord(c) - 97] += 1
 
-        counts = Counter(s)
-        mirror_idx = 0
+        pre = []
 
-        for c in target:
-            if counts[c] > 0:
-                mirror_idx += 1
-                counts[c] -= 1
+        for i in range(len(s)):
+            x = ord(target[i]) - 97
+
+            if cnt[x]:
+                cnt[x] -= 1
+                pre.append(target[i])
             else:
                 break
 
-        if mirror_idx == len(target):
-            mirror_idx -= 1
-            counts[target[-1]] += 1
+        for i in range(len(pre), -1, -1):
+            if i < len(pre):
+                cnt[ord(pre.pop()) - 97] += 1
 
-        iterate = sorted(counts.keys())
-        res = ""
+            x = ord(target[i]) - 97 if i < len(target) else 26
 
-        def sorted_counts(counts):
-            temp = ""
-            for k in iterate:
-                temp += k * counts[k]
-            return temp
-        
-        for s_idx in range(mirror_idx, -1, -1):
-            for key in iterate:
-                if key > target[s_idx] and counts[key] > 0:
-                    res = target[:s_idx]
-                    res += key
-                    counts[key] -= 1
-                    res += sorted_counts(counts)
-                    return res
-
-            counts[target[s_idx - 1]] += 1
+            for c in range(x + 1, 26):
+                if cnt[c]:
+                    cnt[c] -= 1
+                    return ''.join(pre) + chr(c + 97) + ''.join(
+                        chr(j + 97) * cnt[j] for j in range(26)
+                    )
 
         return ""

@@ -1,36 +1,13 @@
 class Solution(object):
     def reversePairs(self, nums):
-        count=0
-        if len(nums)>1:
-            # calculate mid
-            mid=len(nums)//2
-            # divide the input array in to right and left
-            left=nums[:mid]
-            right=nums[mid:]
-            count+=self.reversePairs(left)
-            count+=self.reversePairs(right)
-            i=0
-            j=0
-            # the tricky part - updating the count of number of possible pairs
-            for i in range(len(left)):
-                while j<len(right) and left[i]>right[j]*2:
-                    j+=1
-                count+=j
-            # merge two sorted array
-            i=j=k=0        
-            while i<len(left) and j<len(right):
-                if left[i]>right[j]:
-                    nums[k]=right[j]
-                    j+=1
-                    k+=1
-                else:
-                    nums[k]=left[i]
-                    i+=1
-                    k+=1
-            while j<len(right):
-                nums[k]=right[j]
-                j,k=j+1,k+1
-            while i<len(left):
-                nums[k]=left[i]
-                i,k=i+1,k+1     
-        return count       
+       from bisect import bisect_left,insort
+       sorted_right=[]
+       c=0
+       n=len(nums)
+       for i in range(n-1,-1,-1):
+            c+=bisect_left(sorted_right,(nums[i]+1)//2)
+            insort(sorted_right,nums[i])
+
+       return c
+        
+        

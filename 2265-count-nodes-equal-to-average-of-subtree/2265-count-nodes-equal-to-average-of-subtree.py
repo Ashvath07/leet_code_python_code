@@ -1,32 +1,21 @@
-class Pair(object):
-    def __init__(self, first, second):
-        self.first = first
-        self.second = second
-
-
 class Solution(object):
     def averageOfSubtree(self, root):
-        """
-        :type root: Optional[TreeNode]
-        :rtype: int
-        """
-        self.count = 0
+        self.ans = 0
 
-        def postOrder(root):
-            if root is None:
-                return Pair(0, 0)
+        def dfs(node):
+            if not node:
+                return (0, 0)
 
-            left = postOrder(root.left)
-            right = postOrder(root.right)
+            left_sum, left_count = dfs(node.left)
+            right_sum, right_count = dfs(node.right)
 
-            total_sum = left.first + right.first + root.val
-            node_count = left.second + right.second + 1
+            total_sum = left_sum + right_sum + node.val
+            total_count = left_count + right_count + 1
 
-            if total_sum // node_count == root.val:
-                self.count += 1
+            if node.val == total_sum / total_count:
+                self.ans += 1
 
-            return Pair(total_sum, node_count)
+            return (total_sum, total_count)
 
-        postOrder(root)
-
-        return self.count
+        dfs(root)
+        return self.ans

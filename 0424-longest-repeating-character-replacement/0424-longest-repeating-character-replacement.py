@@ -1,18 +1,13 @@
-from collections import defaultdict
-
-class Solution:
+class Solution(object):
     def characterReplacement(self, s, k):
-        freqs = defaultdict(int)
-        res = 0
-        i = 0
-
-        for j in range(len(s)):
-            freqs[s[j]] += 1
-            maxFreq = max(freqs.values())
-            curLen = j - i + 1
-            if curLen - maxFreq > k:
-                freqs[s[i]] -= 1
-                i += 1
-            res = max(res, j - i + 1)
-        
-        return res
+        count=defaultdict(int)
+        max_count=0
+        left=0
+        for right, c in enumerate(s):
+            count[c]+=1
+            if count[c]>max_count:
+                max_count=count[c]
+            elif right-left+1>max_count+k:
+                left+=1
+                count[s[left-1]]-=1
+        return len(s)-left   

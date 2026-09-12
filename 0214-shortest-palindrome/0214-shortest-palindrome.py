@@ -1,6 +1,16 @@
-class Solution(object):
+class Solution:
     def shortestPalindrome(self, s):
-        r = s[::-1]
-        for i in range(len(s)+1):
-            if s.startswith(r[i:]):
-                return r[:i]+s
+        if not s:
+            return s
+        rev = s[::-1]
+        combined = s + "#" + rev
+        lps = [0] * len(combined)
+        for i in range(1, len(combined)):
+            j = lps[i - 1]
+            while j > 0 and combined[i] != combined[j]:
+                j = lps[j - 1]
+            if combined[i] == combined[j]:
+                j += 1
+            lps[i] = j
+        palindrome_len = lps[-1]
+        return rev[:len(s) - palindrome_len] + s

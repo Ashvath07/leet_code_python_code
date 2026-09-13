@@ -1,14 +1,12 @@
-import numpy as np
 class Solution(object):
-    def largestOverlap(self, A, B):
-        A = np.array(A)
-        B = np.array(B)
-        H, W = A.shape
-        pad = A.shape[0] - 1
-        A_pad = np.pad(A, pad, mode='constant')
-        Hout = Wout = 2*pad + 1
-        conv = np.zeros(shape=(Hout, Wout))
-        for h in range(Hout):
-            for w in range(Wout):
-                conv[h, w] = np.sum(B * A_pad[h:h+H, w:w+W])
-        return int(np.max(conv))
+    def largestOverlap(self, img1, img2):
+        N = len(img1)
+        ones1 = [(r, c) for r in range(N) for c in range(N) if img1[r][c] == 1]
+        ones2 = [(r, c) for r in range(N) for c in range(N) if img2[r][c] == 1]
+
+        shift_counts = defaultdict(int)
+        for r1, c1 in ones1:
+            for r2, c2 in ones2:
+                shift_counts[(r1 - r2, c1 - c2)] += 1
+
+        return max(shift_counts.values()) if shift_counts else 0

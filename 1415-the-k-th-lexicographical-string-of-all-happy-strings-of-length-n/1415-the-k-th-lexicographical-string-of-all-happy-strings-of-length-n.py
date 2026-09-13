@@ -1,40 +1,26 @@
-#translated using AI
-class Solution:
-    def __init__(self):
-        self.count = 0
+class Solution(object):
 
-    def getHappyString(self, n, k):
+  def getHappyString(self, n, k):
+    total_strings = 3 * (1 << (n - 1))
+    if k > total_strings:
+      return ''
 
-        size = 3 * (2 ** (n - 1))
+    # Determine first character
+    k -= 1  # Convert to 0-indexed
+    group_size = 1 << (n - 1)
+    first_char_idx = k // group_size
+    res = [chr(ord('a') + first_char_idx)]
 
-        if k > size:
-            return ""
+    k %= group_size
 
-        return self.helper(n, k, "")
+    # Build the rest of the string
+    for i in range(1, n):
+      group_size >>= 1
+      next_char_idx = k // group_size
+      k %= group_size
 
-    def helper(self, n, k, s):
+      # Available characters excluding the last inserted character
+      choices = [c for c in ['a', 'b', 'c'] if c != res[-1]]
+      res.append(choices[next_char_idx])
 
-        if len(s) == n:
-            self.count += 1
-
-            if self.count == k:
-                return s
-
-            return ""
-
-        if len(s) == 0 or s[-1] != 'a':
-            res = self.helper(n, k, s + 'a')
-            if res != "":
-                return res
-
-        if len(s) == 0 or s[-1] != 'b':
-            res = self.helper(n, k, s + 'b')
-            if res != "":
-                return res
-
-        if len(s) == 0 or s[-1] != 'c':
-            res = self.helper(n, k, s + 'c')
-            if res != "":
-                return res
-
-        return ""
+    return ''.join(res)

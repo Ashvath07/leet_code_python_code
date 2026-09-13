@@ -1,15 +1,17 @@
 class Solution(object):
     def restoreIpAddresses(self, s):
-        res = []
-        self.dfs(s, 0, "", res)
-        return res
-    
-    def dfs(self, s, idx, path, res):
-        if idx > 4:
-            return 
-        if idx == 4 and not s:
-            res.append(path[:-1])
-            return 
-        for i in range(1, len(s)+1):
-            if s[:i]=='0' or (s[0]!='0' and 0 < int(s[:i]) < 256):
-                self.dfs(s[i:], idx+1, path+s[:i]+".", res)
+        result = []
+        def backtrack(start, parts):
+            if len(parts) == 4:
+                if start == len(s):
+                    result.append(".".join(parts))
+                return
+            for end in range(start + 1, min(start + 3, len(s)) + 1):
+                part = s[start:end]
+                if len(part) > 1 and part[0] == '0':
+                    continue
+                if int(part) > 255:
+                    continue
+                backtrack(end, parts + [part])
+        backtrack(0, [])
+        return result

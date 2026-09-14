@@ -1,12 +1,21 @@
 class Solution(object):
     def sortArrayByParityII(self, nums):
-        i,j =0,1
-        n =len(nums)
-        while i<n and j<n:
-            if nums[i]%2 == 0:
-                i+=2
-            elif nums[j]%2 ==1:
-                j+=2
-            else:
-                nums[i],nums[j] = nums[j],nums[i]
+        
+        even = 0
+        odd = 1
+
+        while even < len(nums) and odd < len(nums):
+
+            if nums[even] & 1 == 0:
+                even += 2
+                continue
+            
+            if nums[odd] & 1 == 1:
+                odd += 2
+                continue
+
+            nums[even], nums[odd] = nums[odd], nums[even]
+            even += 2
+            odd += 2
+
         return nums

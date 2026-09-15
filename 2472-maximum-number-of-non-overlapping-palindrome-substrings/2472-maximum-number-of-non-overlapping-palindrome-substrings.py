@@ -1,19 +1,16 @@
 class Solution(object):
     def maxPalindromes(self, s, k):
-        n =len(s)
-        last_end = count =0
-        for center in range(2*n):
-            left = center //2
-            right = left+center %2
-            while left >=0 and right <n and s[left] == s[right]:
-                if right - left+1>=k:
-                    end = right+1
-                    if left >= last_end:
-                        last_end = end
-                        count+=1
-                    else:
-                        last_end = min(last_end,end)
-                    break
-                left-=1
-                right+=1
-        return count
+        n,ans,last_end = len(s),0,-1
+        for i in range(n):
+            start_k = i - k + 1 
+            if start_k >= 0 and start_k > last_end:
+                if s[start_k : i + 1] == s[start_k : i + 1][::-1]:
+                    ans += 1
+                    last_end = i
+                    continue
+            start_k1 = i - k
+            if start_k1 >= 0 and start_k1 > last_end:
+                if s[start_k1 : i + 1] == s[start_k1 : i + 1][::-1]:
+                    ans += 1
+                    last_end = i
+        return ans

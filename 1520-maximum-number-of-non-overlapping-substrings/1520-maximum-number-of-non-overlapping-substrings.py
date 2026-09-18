@@ -1,59 +1,43 @@
 class Solution:
     def maxNumOfSubstrings(self, s):
-        n = len(s)
 
-        first = [n] * 26
-        last = [-1] * 26
+        first = {}
+        last = {}
 
-        # Find first and last occurrence of every character
-        for i in range(n):
-            ch = ord(s[i]) - ord('a')
-
-            if first[ch] == n:
+        for i, ch in enumerate(s):
+            if ch not in first:
                 first[ch] = i
-
             last[ch] = i
 
         intervals = []
 
-        # Build valid intervals
-        for ch in range(26):
-            if last[ch] == -1:
-                continue
+        for ch in first:
+            l = first[ch]
+            r = last[ch]
+            i = l
+            ok = True
 
-            start = first[ch]
-            end = last[ch]
+            while i <= r:
+                c = s[i]
 
-            valid = True
-            i = start
-
-            # Keep checking even when end gets expanded
-            while i <= end:
-                current = ord(s[i]) - ord('a')
-
-                # This character has an occurrence before start
-                if first[current] < start:
-                    valid = False
+                if first[c] < l:
+                    ok = False
                     break
 
-                # Include all occurrences of this character
-                end = max(end, last[current])
-
+                r = max(r, last[c])
                 i += 1
 
-            if valid:
-                intervals.append((start, end))
+            if ok:
+                intervals.append((l, r))
 
-        # Sort by ending position
-        intervals.sort(key=lambda x: (x[1], x[1] - x[0]))
+        intervals.sort(key=lambda x: x[1])
 
-        answer = []
-        previous_end = -1
+        ans = []
+        end = -1
 
-        # Greedily choose non-overlapping intervals
-        for start, end in intervals:
-            if start > previous_end:
-                answer.append(s[start:end + 1])
-                previous_end = end
+        for l, r in intervals:
+            if l > end:
+                ans.append(s[l:r + 1])
+                end = r
 
-        return answer
+        return ans

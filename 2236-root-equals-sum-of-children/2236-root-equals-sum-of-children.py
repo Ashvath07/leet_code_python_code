@@ -12,5 +12,4 @@ class Solution(object):
         node = root.val
         if node == n1:
             return True
-        else:
-            return False
+        return False

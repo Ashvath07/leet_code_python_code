@@ -1,14 +1,14 @@
 class Solution(object):
     def minAddToMakeValid(self, s):
-        stack = []
-        pairs = {')': '('}
-
-        for ch in s:
-            if ch == '(':
-                stack.append(ch)
-            elif stack and stack[-1] == pairs[ch]:
-                stack.pop()
+        open_count =0
+        count =0
+        for i in s:
+            if i == '(':
+               open_count+=1
             else:
-                stack.append(ch)
-
-        return len(stack)
+                if open_count >0:
+                    open_count-=1
+                else:
+                    count+=1
+        return abs(count+open_count)
+        

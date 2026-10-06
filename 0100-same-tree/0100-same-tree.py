@@ -6,10 +6,10 @@
 #         self.right = right
 class Solution(object):
     def isSameTree(self, p, q):
-        stack =deque()
+        stack =[]
         stack.append((p,q))
         while stack:
-            n1,n2 = stack.popleft()
+            n1,n2 = stack.pop()
             if not n1 and not n2:
                 continue
             if not n1 or not n2 or n1.val != n2.val:

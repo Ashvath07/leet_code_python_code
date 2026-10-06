@@ -8,10 +8,9 @@ class Solution(object):
     def checkTree(self, root):
         if not root:
             return
-        n1 = root.left.val
-        n2 = root.right.val
+        n1 = root.left.val + root.right.val
         node = root.val
-        if node == n1+n2:
+        if node == n1:
             return True
         else:
             return False

@@ -8,10 +8,10 @@ class Solution(object):
     def hasPathSum(self, root, targetSum):
         if not root:
             return False 
-        stack =[]
+        stack =deque()
         stack.append((root,targetSum-root.val))
         while stack:
-            node,curr = stack.pop()
+            node,curr = stack.popleft()
             if not node.left and not node.right and curr == 0:
                 return True
             if node.right:

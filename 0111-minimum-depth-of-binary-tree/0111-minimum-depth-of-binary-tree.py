@@ -8,10 +8,10 @@ class Solution(object):
     def minDepth(self, root):
         if not root:
             return 0
-        first = []
+        first = deque()
         first.append((root,1))
         while first :
-            node,depth = first.pop(0)
+            node,depth = first.popleft()
             if not node.left and not node.right:
                 return depth
             if node.left:

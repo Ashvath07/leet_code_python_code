@@ -1,5 +1,6 @@
 class Solution(object):
     def lengthOfLastWord(self, s):
-        word = s.split()
-        last = word[-1]
-        return len(last)
+        stack = []
+        for i in s.split():
+            stack.append(i)
+        return len(stack[-1])

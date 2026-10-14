@@ -9,10 +9,10 @@ class Solution(object):
         if not root:
             return 0
         value = 0
-        stack =[]
+        stack =deque()
         stack.append((root,False))
         while stack:
-            node,is_left = stack.pop()
+            node,is_left = stack.popleft()
             if not node.left and not node.right:
                 if is_left:
                     value = value+node.val
